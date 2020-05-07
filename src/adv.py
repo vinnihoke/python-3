@@ -120,17 +120,23 @@ while True:
                 player.current_room.show_items()
                 select = input("Pick up item? (y/n)")
                 if select == "y":
-                    print("You picked up {player.current_room.items[0]}")
+                    print(f"You picked up {player.current_room.items[0].name}")
                     player.add_backpack(player.current_room.items[0])
+                    player.show_backpack()
+                    room.remove_items(player.current_room.items[0])
                 else:
                     print("You didn't pick anything up.")
 
-    except AttributeError:
-        player.change_room(room["outside"])
+        if command == "d":
+            player.show_backpack()
+            drop = input("Which item? ")
+            player.current_room.add_item(player.drop_item(drop))
 
-#
-#
+    except AttributeError:
+        print("Oops, an error has occurred")
+        # player.change_room(room["outside"])
+
+
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
-#
 # If the user enters "q", quit the game.

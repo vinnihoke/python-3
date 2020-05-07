@@ -14,3 +14,10 @@ class Room:
 
     def add_item(self, item):
         self.items.append(item)
+
+    def show_items(self):
+        for item in self.items:
+            print(f"{item.name} used to {item.desc}")
+
+    def remove_item(self, item):
+        self.items.remove(item)

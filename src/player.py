@@ -16,3 +16,22 @@ class Player:
 
     def add_backpack(self, item):
         self.backpack.append(item)
+
+    def show_backpack(self):
+        if len(self.backpack) == 0:
+            print("Backpack empty")
+        else:
+            for item in self.backpack:
+                print(item)
+
+    def drop_item(self, item):
+        if len(self.backpack) == 0:
+            print("Backpack empty")
+        else:
+            for i in self.backpack:
+                if item == i:
+                    dropped = item.name
+                    self.backpack.remove(item)
+                    return dropped
+                else:
+                    print("Error has occurred")
