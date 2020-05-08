@@ -1,5 +1,6 @@
 from room import Room
 from player import Player
+from items import Item
 import random
 
 # Declare all the rooms
@@ -23,6 +24,11 @@ chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
 
+items = {
+    "potion": Item("Potion", "Heal yourself"),
+    "wand": Item("Wand", "Cast spells"),
+    "stone": Item("Infinity Stone", "Control the galaxy")
+}
 
 # Link rooms together
 
@@ -37,6 +43,10 @@ room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
 # Main
+room['overlook'].add_item(items["wand"])
+room['narrow'].add_item(items["potion"])
+room['treasure'].add_item(items['stone'])
+
 
 # Make a new player object that is currently in the 'outside' room.
 player = Player("Joe", room["outside"])
@@ -102,12 +112,31 @@ while True:
                 print("\n\n🛑 Cannot advance")
             else:
                 player.change_room(player.current_room.w_to)
-    except AttributeError:
-        player.change_room(room["outside"])
 
-#
-#
+        if command == "l":
+            if len(player.current_room.items) == 0:
+                print("Nothing in room")
+            else:
+                player.current_room.show_items()
+                select = input("Pick up item? (y/n)")
+                if select == "y":
+                    print(f"You picked up {player.current_room.items[0].name}")
+                    player.add_backpack(player.current_room.items[0])
+                    player.show_backpack()
+                    room.remove_items(player.current_room.items[0])
+                else:
+                    print("You didn't pick anything up.")
+
+        if command == "d":
+            player.show_backpack()
+            drop = input("Which item? ")
+            player.current_room.add_item(player.drop_item(drop))
+
+    except AttributeError:
+        print("Oops, an error has occurred")
+        # player.change_room(room["outside"])
+
+
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
-#
 # If the user enters "q", quit the game.
